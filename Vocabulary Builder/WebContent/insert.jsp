@@ -1,8 +1,9 @@
+<!DOCTYPE html>
 <%@ page import="java.sql.*"%>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -17,12 +18,12 @@
 	<br>
 	<br>
 	<div>
-		<form method = "get" action="processing.jsp">
+		<form method="get" action="processing.jsp">
 			<label for="word">Word</label> <input type="text" name="text_word"
 				name="word" placeholder="Please enter a word...."> <label
 				for="meaning">Meaning</label> <input type="text" name="text_meaning"
-				name="meaning" placeholder="Meaning...."> </label> </select> <input
-				type="submit" value="Submit">
+				name="meaning" placeholder="Meaning...."> <select>
+			</select> <input type="submit" value="Submit">
 		</form>
 	</div>
 	<%
@@ -46,6 +47,5 @@
 			}
 		}
 	%>
-	</table>
 </body>
 </html>
