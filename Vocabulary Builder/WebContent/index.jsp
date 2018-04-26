@@ -1,4 +1,7 @@
-<%@ page import="java.sql.*"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -21,7 +24,7 @@
 			<th>Word</th>
 			<th>Meaning</th>
 		</tr>
-		<%
+		<%-- <%
 			Connection connection = null;
 			String word = null;
 			String meaning = null;
@@ -56,7 +59,20 @@
 
 				}
 			}
-		%>
+		%> --%>
+		<sql:setDataSource var="snapshot" driver="com.mysql.jdbc.Driver"
+			url="jdbc:mysql://10.126.226.134:3306/db_vocabulary_builder" user="remote"
+			password="Pcoriionvit1_" />
+
+		<sql:query dataSource="${snapshot}" var="result">
+        select c_word, c_meaning from tb_vocabulary_builder;
+     </sql:query>
+		<c:forEach var="row" items="${result.rows}">
+			<tr>
+				<td><c:out value="${row.c_word}" /></td>
+				<td><c:out value="${row.c_meaning}" /></td>
+			</tr>
+		</c:forEach>
 	</table>
 </body>
 </html>
