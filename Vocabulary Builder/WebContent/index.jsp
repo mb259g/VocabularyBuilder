@@ -61,8 +61,8 @@
 			}
 		%> --%>
 		<sql:setDataSource var="snapshot" driver="com.mysql.jdbc.Driver"
-			url="jdbc:mysql://10.126.226.134:3306/db_vocabulary_builder" user="remote"
-			password="Pcoriionvit1_" />
+			url="jdbc:mysql://10.126.233.83:3306/db_vocabulary_builder" user="remote_root"
+			password="pcoriionvit" />
 
 		<sql:query dataSource="${snapshot}" var="result">
         select c_word, c_meaning from tb_vocabulary_builder;
