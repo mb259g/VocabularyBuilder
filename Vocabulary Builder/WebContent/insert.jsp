@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<%@ page import="java.sql.*"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -22,30 +25,9 @@
 			<label for="word">Word</label> <input type="text" name="text_word"
 				name="word" placeholder="Please enter a word...."> <label
 				for="meaning">Meaning</label> <input type="text" name="text_meaning"
-				name="meaning" placeholder="Meaning...."> <select>
-			</select> <input type="submit" value="Submit">
+				name="meaning" placeholder="Meaning...."> <input
+				type="submit" value="Submit">
 		</form>
 	</div>
-	<%
-		Connection connection = null;
-		String word = null;
-		String meaning = null;
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM",
-					"pcoriionvit");
-			Statement statement = connection.createStatement();
-		} catch (Exception exception) {
-			out.println("Exception : " + exception.getMessage() + "");
-		} finally {
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (Exception ignored) {
-				}
-
-			}
-		}
-	%>
 </body>
 </html>

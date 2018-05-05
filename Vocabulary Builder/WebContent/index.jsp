@@ -24,53 +24,17 @@
 			<th>Word</th>
 			<th>Meaning</th>
 		</tr>
-		<%-- <%
-			Connection connection = null;
-			String word = null;
-			String meaning = null;
-			try {
-				Class.forName("oracle.jdbc.driver.OracleDriver");
-				connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM",
-						"pcoriionvit");
-				Statement statement = connection.createStatement();
-				String SQLQuery = "Select c_word, c_meaning from (select c_word, c_meaning from t_vocabulary_builder order by dbms_random.value) where rownum < 6 order by c_word";
-				ResultSet resultSet = statement.executeQuery(SQLQuery);
-
-				while (resultSet.next()) {
-					word = resultSet.getString("c_word");
-					meaning = resultSet.getString("c_meaning").toString().concat(".");
-				%>
-					<tr>
-					<td><%=word%></td>
-					<td><%=meaning%></td>
-					</tr>
-				<%
-				}
-			}
-			catch (Exception exception) {
-				out.println("Exception : " + exception.getMessage() + "");
-			}
-			finally {
-				if (connection != null) {
-					try {
-						connection.close();
-					} catch (Exception ignored) {
-					}
-
-				}
-			}
-		%> --%>
 		<sql:setDataSource var="snapshot" driver="com.mysql.jdbc.Driver"
-			url="jdbc:mysql://10.126.233.83:3306/db_vocabulary_builder" user="remote_root"
-			password="pcoriionvit" />
+			url="jdbc:mysql://10.126.225.39:3306/db_vocabulary_builder?autoReconnect=true&useSSL=false"
+			user="remote" password="Pcoriionvit1_" />
 
 		<sql:query dataSource="${snapshot}" var="result">
-        select c_word, c_meaning from tb_vocabulary_builder;
+        select cl_word, cl_meaning from tb_vocabulary_builder order by rand() limit 5;
      </sql:query>
 		<c:forEach var="row" items="${result.rows}">
 			<tr>
-				<td><c:out value="${row.c_word}" /></td>
-				<td><c:out value="${row.c_meaning}" /></td>
+				<td><c:out value="${row.cl_word}" /></td>
+				<td><c:out value="${row.cl_meaning}" /></td>
 			</tr>
 		</c:forEach>
 	</table>

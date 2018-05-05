@@ -1,4 +1,8 @@
-<%@ page import="java.sql.*"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -10,55 +14,50 @@
 <title>Vocabulary Builder - Process</title>
 </head>
 <body>
-	<%
-		String param_word = request.getParameter("text_word").toLowerCase();
-		String param_meaning = request.getParameter("text_meaning").toLowerCase();
-		Connection connection = null;
-		String word = null;
-		String meaning = null;
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM",
-					"pcoriionvit");
-			Statement statement = connection.createStatement();
-			String SQLSelectQuery = "Select 1 from t_vocabulary_builder where lower(c_word) = '" + param_word
-					+ "' ";
-			ResultSet resultSet = statement.executeQuery(SQLSelectQuery);
-
-			while (resultSet.next()) {
-				if (resultSet.getInt(1) == 1) {
-	%>
-	<h1>Data already exists.</h1>
-	<%
-		} else {
-					String SQLInsertQuery = "insert into t_vocabulary_builder values ('" + param_word + "', '"
-							+ param_meaning + "')";
-
-					int i = statement.executeUpdate(SQLInsertQuery);
-					if (i != 0) {
-	%>
-	<h1>Record has been inserted"</h1>
-	<%
-		} else {
-	%>
-	<h1>Failed to insert the data</h1>
-	<%
-		}
-					statement.clearBatch();
+	<c:if test="${empty param.text_word or empty param.text_meaning}">
+            <c:redirect url="insert.jsp">
+                <c:param name="errMsg"
+				value="Please Enter Word and Meaning" />
+            </c:redirect>
+        </c:if>
+	<sql:setDataSource var="snapshot" driver="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://10.126.225.39:3306/db_vocabulary_builder?autoReconnect=true&useSSL=false"
+		user="remote" password="Pcoriionvit1_" />
+	<c:catch var="exception">
+		<sql:update dataSource="${snapshot}" var="updatedTable">
+				insert into tb_vocabulary_builder values(?, ?);
+				<sql:param value="${param.text_word}" />
+			<sql:param value="${param.text_meaning}" />
+		</sql:update>
+		<c:if test="${updatedTable>=1}">
+			<font size="5" color='green'> Congratulations ! Data inserted
+				successfully.</font>
+			<div id="counter">2</div>
+			<script>
+				setInterval(function() {
+					var div = document.querySelector("#counter");
+					var count = div.textContent * 1 - 1;
+					div.textContent = count;
+					if (count <= 0) {
+						window.location.href = "insert.jsp";
+					}
+				}, 1000);
+			</script>
+		</c:if>
+	</c:catch>
+	<c:if test="${exception!=null}">
+		<font size="5" color='red'> Record already exists, redirecting in......</font>
+		<div id="counter">3</div>
+		<script>
+			setInterval(function() {
+				var div = document.querySelector("#counter");
+				var count = div.textContent * 1 - 1;
+				div.textContent = count;
+				if (count <= 0) {
+					window.location.href = "insert.jsp";
 				}
-
-			}
-		} catch (Exception exception) {
-			out.println("Exception : " + exception.getMessage() + "");
-		} finally {
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (Exception ignored) {
-				}
-
-			}
-		}
-	%>
+			}, 1000);
+		</script>
+	</c:if>
 </body>
 </html>
